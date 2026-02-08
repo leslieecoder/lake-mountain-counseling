@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sociedad de Socorro - Consejería Entre Hermanas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #e8f4f8 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            color: #8b4789;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .header .subtitle {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+
+        .quote-box {
+            background: linear-gradient(135deg, #f8e8f5 0%, #e8f0f8 100%);
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #8b4789;
+            margin-top: 20px;
+            font-style: italic;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .quote-author {
+            text-align: right;
+            font-weight: bold;
+            color: #8b4789;
+            margin-top: 10px;
+            font-style: normal;
+        }
+
+        .add-question-section {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .add-question-section h2 {
+            color: #8b4789;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e8d4e6;
+            border-radius: 12px;
+            font-size: 1em;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 100px;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #8b4789;
+        }
+
+        .button {
+            background: linear-gradient(135deg, #9b5a99 0%, #7a4278 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 10px rgba(139, 71, 137, 0.3);
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(139, 71, 137, 0.4);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        .questions-section {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .questions-section h2 {
+            color: #8b4789;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            border: 2px solid #e8d4e6;
+            background: white;
+            color: #8b4789;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+
+        .filter-btn.active {
+            background: #8b4789;
+            color: white;
+            border-color: #8b4789;
+        }
+
+        .question-card {
+            background: linear-gradient(135deg, #fcf8fc 0%, #f8fcfe 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border: 2px solid #f0e6ef;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .question-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 71, 137, 0.15);
+        }
+
+        .question-text {
+            color: #333;
+            font-size: 1.05em;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .question-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .vote-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .vote-btn {
+            background: white;
+            border: 2px solid #e8d4e6;
+            color: #8b4789;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .vote-btn:hover {
+            background: #f8e8f5;
+            border-color: #8b4789;
+        }
+
+        .vote-btn.voted {
+            background: #8b4789;
+            color: white;
+            border-color: #8b4789;
+        }
+
+        .vote-count {
+            font-weight: bold;
+            color: #8b4789;
+            font-size: 1.1em;
+        }
+
+        .timestamp {
+            color: #999;
+            font-size: 0.85em;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .question-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌸 Consejería Entre Hermanas 🌸</h1>
+            <p class="subtitle">Sociedad de Socorro • Un espacio seguro para compartir y apoyarnos</p>
+            <div class="quote-box">
+                "Cuando nos aconsejamos unos a otros, edificamos confianza y desarrollamos soluciones juntos. El consejo en consejo unido nos permite beneficiarnos de la inspiración que el Señor puede dar a través de otros."
+                <div class="quote-author">— Principios de Liderazgo de la Iglesia</div>
+            </div>
+        </div>
+
+        <div class="add-question-section">
+            <h2>Comparte Tu Pregunta (Anónimamente)</h2>
+            <textarea id="questionInput" placeholder="¿Qué tema te gustaría discutir con las hermanas? Todas tus preguntas son anónimas y en un espacio seguro..."></textarea>
+            <button class="button" onclick="addQuestion()">✨ Compartir Pregunta</button>
+        </div>
+
+        <div class="questions-section">
+            <h2>Preguntas de Nuestras Hermanas</h2>
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterQuestions('popular')">🌟 Más Populares</button>
+                <button class="filter-btn" onclick="filterQuestions('recent')">🆕 Más Recientes</button>
+                <button class="filter-btn" onclick="filterQuestions('all')">📋 Todas</button>
+            </div>
+            <div id="questionsList"></div>
+        </div>
+    </div>
+
+    <script>
+        let questions = [];
+        let currentFilter = 'popular';
+        let votedQuestions = new Set();
+
+        // Load data from localStorage
+        function loadData() {
+            const saved = localStorage.getItem('rsQuestions');
+            if (saved) {
+                questions = JSON.parse(saved);
+            }
+            const savedVotes = localStorage.getItem('rsVotes');
+            if (savedVotes) {
+                votedQuestions = new Set(JSON.parse(savedVotes));
+            }
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('rsQuestions', JSON.stringify(questions));
+            localStorage.setItem('rsVotes', JSON.stringify([...votedQuestions]));
+        }
+
+        function addQuestion() {
+            const input = document.getElementById('questionInput');
+            const text = input.value.trim();
+            
+            if (text === '') {
+                alert('Por favor escribe una pregunta antes de compartir');
+                return;
+            }
+
+            const question = {
+                id: Date.now(),
+                text: text,
+                votes: 0,
+                timestamp: new Date().toISOString()
+            };
+
+            questions.unshift(question);
+            input.value = '';
+            saveData();
+            renderQuestions();
+        }
+
+        function toggleVote(id) {
+            const question = questions.find(q => q.id === id);
+            if (!question) return;
+
+            if (votedQuestions.has(id)) {
+                question.votes--;
+                votedQuestions.delete(id);
+            } else {
+                question.votes++;
+                votedQuestions.add(id);
+            }
+
+            saveData();
+            renderQuestions();
+        }
+
+        function filterQuestions(filter) {
+            currentFilter = filter;
+            
+            // Update button states
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            renderQuestions();
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questionsList');
+            
+            if (questions.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <svg fill="#8b4789" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                        </svg>
+                        <p>Aún no hay preguntas. ¡Sé la primera en compartir!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let sortedQuestions = [...questions];
+            
+            if (currentFilter === 'popular') {
+                sortedQuestions.sort((a, b) => b.votes - a.votes);
+            } else if (currentFilter === 'recent') {
+                sortedQuestions.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            }
+
+            container.innerHTML = sortedQuestions.map(q => {
+                const isVoted = votedQuestions.has(q.id);
+                const timeAgo = getTimeAgo(new Date(q.timestamp));
+                
+                return `
+                    <div class="question-card">
+                        <div class="question-text">${escapeHtml(q.text)}</div>
+                        <div class="question-footer">
+                            <div class="vote-section">
+                                <button class="vote-btn ${isVoted ? 'voted' : ''}" onclick="toggleVote(${q.id})">
+                                    ${isVoted ? '💜' : '🤍'} ${isVoted ? 'Votado' : 'Votar'}
+                                </button>
+                                <span class="vote-count">${q.votes} ${q.votes === 1 ? 'voto' : 'votos'}</span>
+                            </div>
+                            <span class="timestamp">${timeAgo}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            
+            if (seconds < 60) return 'Hace un momento';
+            if (seconds < 3600) return `Hace ${Math.floor(seconds / 60)} min`;
+            if (seconds < 86400) return `Hace ${Math.floor(seconds / 3600)} h`;
+            if (seconds < 604800) return `Hace ${Math.floor(seconds / 86400)} días`;
+            return date.toLocaleDateString('es-ES');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Initialize
+        loadData();
+        renderQuestions();
+    </script>
+</body>
+</html>
